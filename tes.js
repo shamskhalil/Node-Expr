@@ -1,12 +1,21 @@
+const crypto = require('crypto');
+let md5 = crypto.createHash('sha256');
+let password = "secret";
 
-const start = process.hrtime();
-delay(5);
+let hp = md5.update(password).digest()
+console.log(`sha1 of ${password} is ${hp.toString('base64')}`);
 
 
-function delay(valSec) {
-    setTimeout(() => {
-        const end = process.hrtime(start);
-        const time = end[0] * 1000 + end[1] / 1000000
-        console.log(`done after ${time}ms`);
-    }, valSec * 1000)
-}
+const bcrypt = require('bcrypt');
+
+let salt = bcrypt.genSaltSync(12);
+
+
+let hpassword = bcrypt.hashSync(password, salt);
+//console.log(hpassword);
+
+let flag = bcrypt.compareSync(password, hpassword);
+//console.log(`Password matched :${flag}`);
+
+
+
